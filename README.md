@@ -19,7 +19,9 @@ Finalmente instancia una lista (listaFinita) de un tamaño especifico y dos conj
 **Analizar hasta comprender todas las líneas del código**
 
 2. Ejecute el programa y analice los resultados. Con mucha probabilidad va a observar resultados inconsistentes y/o errores. Explique a que se deben.
-
+  
+  *Los errores encontrados se  dan porque la lista se llena o se vacia.  
+  
 3. **Utilizando Locks o RLocks solamente**, modificar los objetos Productor y Consumidor de modo que solucionen los erroes e inconsistencias.
 
 
