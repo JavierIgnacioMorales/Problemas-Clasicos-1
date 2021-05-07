@@ -5,6 +5,10 @@ import time
 
 logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(threadName)s] - %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
+tupla_Pais_Capital = [("España","Madrid"), ("Francia","Paris"),("Italia","Roma"),("Inglaterra","Londres"),("Alemania","Berlin"),("Rusia","Moscu"),
+                                                                                                     ("Turquia","Istambul"),("China","Pekin"), ("Japon","Tokio"),("Emiratos Arabes","Dubai"),("Argentina","Buenos Aires"),
+                                                                                                     ("Brasil","Brasilia"),("Colombia","Bogota"),("Uruguay","Montevideo")]
+
 """
     Clase listaFinita, extiende la clase list ([]) de modo que puede establecerse un limite máximo
     al tamaño (cantidad de objetos) de la lista.
@@ -63,6 +67,9 @@ class listaFinita(list):
 
 
 class Productor(threading.Thread):
+
+    global tupla_Pais_Capital
+
     def __init__(self, lista = listaFinita):
         super().__init__()
         self.lista = lista
@@ -74,7 +81,8 @@ class Productor(threading.Thread):
             if self.lista.full():
                 self.lock.release()
             else:
-                self.lista.append(random.randint(0,100))
+                #self.lista.append(random.randint(0,100))
+                self.lista.append(random.choice(tupla_Pais_Capital))
                 logging.info(f'produjo el item: {self.lista[-1]}')
                 time.sleep(random.randint(1,5))
                 self.lock.release()
@@ -97,7 +105,8 @@ class Consumidor(threading.Thread):
                 self.lock.release()
             else:
                 elemento = self.lista.pop(0)
-                logging.info(f'consumio el item {elemento}')
+                #logging.info(f'consumio el item {elemento}')
+                logging.info('La capital de {0[0]} es {0[1]}'.format(elemento))
                 time.sleep(random.randint(1,5))
                 self.lock.release()
 
