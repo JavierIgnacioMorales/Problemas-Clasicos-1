@@ -101,7 +101,7 @@ class Consumidor(threading.Thread):
 
         while True:
             self.lock.acquire()
-            if not self.lista.full():
+            if len(self.lista) == 0:
                 self.lock.release()
             else:
                 elemento = self.lista.pop(0)
