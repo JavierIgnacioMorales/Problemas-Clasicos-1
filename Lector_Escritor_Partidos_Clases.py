@@ -11,10 +11,10 @@ equipos = ["Boca", "River", "Racing", "Independiente", "San Lorenzo", "Huracán"
 
 class Escritor(threading.Thread):
 
-    def __init__(self, partido):
+    def __init__(self, partido, lock):
         super().__init__()
         self.partido = partido
-        self.llave_Escritor = RWLock()
+        self.llave_Escritor = lock
 
 
     def run(self):
@@ -36,10 +36,10 @@ class Escritor(threading.Thread):
 
 class Lector(threading.Thread):
 
-    def __init__(self, partido):
+    def __init__(self, partido, lock):
         super().__init__()
         self.partido = partido
-        self.llave_Lector = RWLock()
+        self.llave_Lector = lock
 
 
     def run(self):
@@ -48,9 +48,9 @@ class Lector(threading.Thread):
             try:
                 logging.info( 'Lector %s',self.name[7:]+':  El resultado fue: {0[0]} {0[1]} - {0[2]} {0[3]} '.format(random.choice(self.partido)))
             finally:
-                time.sleep(random.randint(1,2))
-                self.llave_Lector.r_release()
                 #time.sleep(random.randint(1,2))
+                self.llave_Lector.r_release()
+                time.sleep(random.randint(1,2))
 
 
 
@@ -58,13 +58,14 @@ def main():
 
     partido = []
     hilos = []
+    lock = RWLock()
 
-    escritor= Escritor(partido)
+    escritor= Escritor(partido, lock)
     hilos.append(escritor)
     escritor.start()
 
     for i in range(4):
-        lector= Lector(partido)
+        lector= Lector(partido,lock)
         hilos.append(i)
         lector.start()
 
